@@ -56,7 +56,6 @@ else:
 
     st.pyplot(fig[0])
 
-    # Mostrar no Streamlit
 
-    st.pyplot(fig[0])
+
 
