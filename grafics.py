@@ -2,7 +2,6 @@ import streamlit as st
 import yfinance as yf
 import mplfinance as mpf
 from datetime import datetime, timedelta
-import pandas as pd
 
 # ---------------------------------------------------
 # CONFIGURAÇÕES INICIAIS
@@ -12,7 +11,7 @@ st.set_page_config(page_title="ETF Candlestick Viewer", layout="wide")
 st.title(" Visualizador de Candlesticks para ETFs")
 st.write("Selecione um ETF e o período para visualizar o gráfico.")
 
-# Lista de ETFs da tua carteira
+# Lista de ETFs da tua carteira (podes editar)
 etfs = ["VOO", "QQQ", "VGT", "VT", "ACWI", "VTV", "XLV", "XLF", "IWM", "VGK", "EWJ", "INDA", "FXI"]
 
 # Dropdowns
@@ -43,18 +42,20 @@ if data.empty:
     st.error("Não foi possível carregar dados para este ETF.")
 else:
     # ---------------------------------------------------
-    # GERAR GRÁFICO CANDLE EM MEMÓRIA
+    # GRÁFICO CANDLESTICK (SEM AX=AX)
     # ---------------------------------------------------
-    fig = mpf.figure(style='yahoo', figsize=(12, 6))
-    ax = fig.add_subplot(1,1,1)
-
-    mpf.plot(
+    fig = mpf.plot(
         data,
         type='candle',
-        mav=(20, 50, 200),
+        style='yahoo',
+        title=f"{ticker} - Candlestick ({periodo})",
         volume=True,
-        ax=ax
+        mav=(20, 50, 200),
+        returnfig=True
     )
 
+    st.pyplot(fig[0])
+
     # Mostrar no Streamlit
+
     st.pyplot(fig)
